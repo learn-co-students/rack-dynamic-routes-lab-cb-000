@@ -1,16 +1,15 @@
 class Application
   def call(env)
     resp = Rack::Response.new
-    req = Rack::Request.new
+    req = Rack::Request.new(env)
 
-    if req.path == "/items"
+    if req.path == "/items/"
       resp.write "Got eem"
       resp.status = 200
     else
-      resp.write "404: Page not Found."
+      resp.write "Route not found"
       resp.status = 404
     end
-
     resp.finish
   end
 end
