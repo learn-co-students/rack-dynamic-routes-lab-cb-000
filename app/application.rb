@@ -1,22 +1,22 @@
 class Application
 
+  @@items = [Item.new("Apples",5.23), Item.new("Oranges",2.43)]
   def call(env)
     resp = Rack::Response.new
+    req = Rack::Request.new(env)
 
-    num_1 = Kernel.rand(3..20)
-    num_2 = Kernel.rand(3..20)
-    num_3 = Kernel.rand(3..20)
-
-    resp.write "#{num_1}\n"
-    resp.write "#{num_2}\n"
-    resp.write "#{num_3}\n"
-
-    if num_1==num_2 && num_2==num_3
-      resp.write "You Win"
+    if req.path.match(/items/)
+      item_name = req.path.split("/items/").last
+      if item =@@items.find{|i| i.name == item_name}
+        resp.write item.price
+      else
+        resp.status = 400
+        resp.write "Item not found"
+      end
     else
-      resp.write "You Lose"
+      resp.status=404
+      resp.write "Route not found"
     end
-
     resp.finish
   end
 
