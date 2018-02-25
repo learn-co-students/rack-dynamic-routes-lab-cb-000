@@ -9,7 +9,16 @@ class Application
 
     # proceed if path is /items/
     if req.path.match(/items/)
-    # 404 if path is NOT /items/  
+      # Returns item price if it is in @@item
+      item_name = req.path.split("/items/").last
+      if item = @@items.find{|i| i.name == item_name}
+        resp.write item.price
+      # Returns an error and 400 if the item is not in @@item
+      else
+        resp.status = 400
+        resp.write "Item not found"
+      end
+    # 404 if path is NOT /items/
     else
       resp.status=404
       resp.write "Route not found"
