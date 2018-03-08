@@ -14,7 +14,7 @@ class Application #define the class
         resp.write "Item not found"
       end
     else
-      resp.status=404 #otherwise respond with errors
+      resp.status = 404 #otherwise respond with errors
       resp.write "Route not found"
     end
     resp.finish
